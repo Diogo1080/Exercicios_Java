@@ -12,17 +12,8 @@ public class Player {
     }
 
     public HandStates getHand() {
-        switch ((int) Math.floor(Math.random() * 3)) {
-            case 0 -> {
-                return HandStates.ROCK;
-            }
-            case 1 -> {
-                return HandStates.PAPER;
-            }
-            case 2 -> {
-                return HandStates.SCISSORS;
-            }
-        }
-        return null;
+        HandStates[] values = HandStates.values();
+        int randIndex = (int) Math.floor(Math.random() * HandStates.values().length);
+        return values[randIndex];
     }
 }

@@ -1,45 +1,41 @@
 package enumexercicies.rockpaperscissors;
 
-import java.util.Scanner;
 
 public class Game {
-    public void start() {
-        Scanner scanner = new Scanner(System.in);
-        int numRounds;
+    private final int numRounds;
 
-        System.out.println("How many rounds this game has?");
-        numRounds = scanner.nextInt();
-
-        roundController(numRounds);
+    public Game(int numRounds) {
+        this.numRounds = numRounds;
     }
 
-    private void roundController(int numRounds) {
-        Player player1 = new Player();
-        Player player2 = new Player();
+    public void start(Player player1, Player player2) {
+        roundController(player1, player2);
+    }
 
+    private void roundController(Player p1, Player p2) {
         for (int i = 0; i < numRounds; i++) {
-            if (player1.getNumPoints() > numRounds / 2 || player2.getNumPoints() > numRounds / 2) {
+            if (p1.getNumPoints() > numRounds / 2 || p2.getNumPoints() > numRounds / 2) {
                 break;
             }
-            round(player1, player2);
-
+            round(p1, p2);
         }
 
-        if (player1.getNumPoints() == player2.getNumPoints()) {
-            while (player1.getNumPoints() == player2.getNumPoints()) {
-                round(player1, player2);
-            }
-        } else if (player1.getNumPoints() > player2.getNumPoints()) {
+        while (p1.getNumPoints() == p2.getNumPoints()) {
+            round(p1, p2);
+        }
+
+        if (p1.getNumPoints() > p2.getNumPoints()) {
             System.out.println("Player 1 won.");
-        } else {
-            System.out.println("Player 2 won.");
+            return;
         }
+        System.out.println("Player 2 won.");
+
     }
 
-    private void round(Player player1, Player player2) {
+    private void round(Player p1, Player p2) {
 
-        HandStates player1Hand = player1.getHand();
-        HandStates player2Hand = player1.getHand();
+        HandStates player1Hand = p1.getHand();
+        HandStates player2Hand = p2.getHand();
 
         if (player1Hand == player2Hand) {
             return;
@@ -48,25 +44,23 @@ public class Game {
         switch (player1Hand) {
             case ROCK -> {
                 if (player2Hand == HandStates.PAPER) {
-                    player2.addPoint();
+                    p2.addPoint();
                     return;
                 }
-                player1.addPoint();
             }
             case PAPER -> {
                 if (player2Hand == HandStates.SCISSORS) {
-                    player2.addPoint();
+                    p2.addPoint();
                     return;
                 }
-                player1.addPoint();
             }
             case SCISSORS -> {
                 if (player2Hand == HandStates.ROCK) {
-                    player2.addPoint();
+                    p2.addPoint();
                     return;
                 }
-                player1.addPoint();
             }
         }
+        p1.addPoint();
     }
 }
