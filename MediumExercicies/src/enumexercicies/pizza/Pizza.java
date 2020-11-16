@@ -1,20 +1,20 @@
-package pizza;
+package enumexercicies.pizza;
 
 public class Pizza {
 
-    private PizzaStatus status;
+    private DeliveryStatus status;
 
-    public enum PizzaStatus {
-        ORDERED,
-        READY,
-        DELIVERED;
+
+    public Pizza(DeliveryStatus status){
+        this.status = status;
     }
 
-    public Pizza(){
+    public void setStatus(DeliveryStatus status){
+        this.status = status;
     }
 
 
-    public PizzaStatus getPizzaStatus(){
+    public DeliveryStatus getPizzaStatus() {
         return this.status;
     }
 
