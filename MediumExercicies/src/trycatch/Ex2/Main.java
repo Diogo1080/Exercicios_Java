@@ -1,12 +1,14 @@
 package trycatch.Ex2;
 
+import trycatch.Ex2.CustomExeptions.*;
+
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
-        ListOfFiles files = new ListOfFiles();
+    public static void main(String[] args) throws Exception {
+        FileManager files = new FileManager();
         Scanner scan = new Scanner(System.in);
-        boolean token = false;
+        boolean login = false;
         int choice;
 
         do {
@@ -15,7 +17,6 @@ public class Main {
             System.out.println("* 2 - Get file         *");
             System.out.println("* 3 - Login            *");
             System.out.println("* 4 - Logout           *");
-            System.out.println("* 5 - Signup           *");
             System.out.println("* 0 - Exit             *");
             System.out.println("*----------------------*");
             choice = scan.nextInt();
@@ -23,16 +24,23 @@ public class Main {
             switch (choice) {
                 case 1 -> {
                     try {
-                        if (token) {
+                        if (login) {
                             System.out.println("Choose filename:");
                             scan.nextLine();
                             String filename = scan.nextLine();
                             files.createNew(filename);
                         } else {
-                            throw new CustomException("LogIn necessary for creating a file.");
+                            throw new NotEnoughPermissionException();
                         }
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
+                    } catch (NotEnoughPermissionException ex) {
+                        System.out.println(ex.getMessage());
+
+                    } catch (NotEnoughSpaceException ex) {
+                        System.out.println(ex.getMessage());
+
+                    } catch (FileNotFoundException ex) {
+                        System.out.println(ex.getMessage());
+
                     }
                 }
                 case 2 -> {
@@ -42,47 +50,18 @@ public class Main {
                         String filename = scan.nextLine();
                         String file = files.checkForFile(filename);
                         System.out.println(file);
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                }
-                case 3 -> {
-                    if (loginCheck()) {
-                        System.out.println("LogIn done with success.");
-                        token = true;
-                    } else {
-                        System.out.println("Incorrect logIn");
-                    }
-                }
+                    } catch (NotEnoughSpaceException ex) {
+                        System.out.println(ex.getMessage());
 
-                case 4 -> token = false;
+                    } catch (FileNotFoundException ex) {
+                        System.out.println(ex.getMessage());
 
-                case 5 -> {
-                    if (signUp()) {
-                        System.out.println("Sign up with success");
-                    } else {
-                        System.out.println("Duplicate entries");
                     }
                 }
+                case 3 -> login = true;
+
+                case 4 -> login = false;
             }
         } while (choice != 0);
-    }
-
-    private static boolean signUp() {
-        Scanner scan = new Scanner(System.in);
-        System.out.println("Enter username:");
-        String username = scan.nextLine();
-        System.out.println("Enter password:");
-        String password = scan.nextLine();
-        return ListOfLogins.createNew(username, password);
-    }
-
-    private static boolean loginCheck() {
-        Scanner scan = new Scanner(System.in);
-        System.out.println("Enter username:");
-        String username = scan.nextLine();
-        System.out.println("Enter password:");
-        String password = scan.nextLine();
-        return ListOfLogins.checkLogin(username, password);
     }
 }

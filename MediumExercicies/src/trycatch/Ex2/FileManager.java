@@ -1,13 +1,15 @@
 package trycatch.Ex2;
 
 
-public class ListOfFiles {
+import trycatch.Ex2.CustomExeptions.*;
+
+public class FileManager {
     private String[] files = new String[10];
     private int pointer = 0;
 
     public boolean createNew(String filename) throws Exception {
         if (files[files.length - 1] != null) {
-            throw new CustomException("File list is full.");
+            throw new NotEnoughSpaceException();
         }
         files[pointer] = filename;
         pointer++;
@@ -16,13 +18,13 @@ public class ListOfFiles {
 
     public String checkForFile(String filename) throws Exception {
         if (files[0] == null) {
-            throw new CustomException("No file was found.");
+            throw new FileNotFoundException();
         }
-        for (int i = 0; i < files.length; i++) {
-            if (filename.equals(files[i])){
-                return files[i];
+        for (String file : files) {
+            if (filename.equals(file)) {
+                return file;
             }
         }
-        throw new CustomException("No file found with that name.");
+        throw new FileNotFoundException();
     }
 }
