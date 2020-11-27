@@ -6,8 +6,12 @@ import trycatch.Ex2.CustomExeptions.*;
 public class FileManager {
     private String[] files = new String[10];
     private int pointer = 0;
+    private boolean login = false;
 
     public boolean createNew(String filename) throws Exception {
+        if (!login){
+            throw new NotEnoughPermissionException();
+        }
         if (files[files.length - 1] != null) {
             throw new NotEnoughSpaceException();
         }
@@ -26,5 +30,9 @@ public class FileManager {
             }
         }
         throw new FileNotFoundException();
+    }
+
+    public void Login() {
+        this.login = true;
     }
 }

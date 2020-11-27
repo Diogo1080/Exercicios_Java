@@ -2,66 +2,38 @@ package trycatch.Ex2;
 
 import trycatch.Ex2.CustomExeptions.*;
 
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws Exception {
         FileManager files = new FileManager();
-        Scanner scan = new Scanner(System.in);
-        boolean login = false;
-        int choice;
 
-        do {
-            System.out.println("*---------Menu---------*");
-            System.out.println("* 1 - Create new file  *");
-            System.out.println("* 2 - Get file         *");
-            System.out.println("* 3 - Login            *");
-            System.out.println("* 4 - Logout           *");
-            System.out.println("* 0 - Exit             *");
-            System.out.println("*----------------------*");
-            choice = scan.nextInt();
+        try {
+            files.createNew("Diogo");
+        } catch (FileManagerException ex) {
+            System.out.println(ex.getMessage());
+        }
 
-            switch (choice) {
-                case 1 -> {
-                    try {
-                        if (login) {
-                            System.out.println("Choose filename:");
-                            scan.nextLine();
-                            String filename = scan.nextLine();
-                            files.createNew(filename);
-                        } else {
-                            throw new NotEnoughPermissionException();
-                        }
-                    } catch (NotEnoughPermissionException ex) {
-                        System.out.println(ex.getMessage());
-
-                    } catch (NotEnoughSpaceException ex) {
-                        System.out.println(ex.getMessage());
-
-                    } catch (FileNotFoundException ex) {
-                        System.out.println(ex.getMessage());
-
-                    }
-                }
-                case 2 -> {
-                    try {
-                        System.out.println("Choose file:");
-                        scan.nextLine();
-                        String filename = scan.nextLine();
-                        String file = files.checkForFile(filename);
-                        System.out.println(file);
-                    } catch (NotEnoughSpaceException ex) {
-                        System.out.println(ex.getMessage());
-
-                    } catch (FileNotFoundException ex) {
-                        System.out.println(ex.getMessage());
-
-                    }
-                }
-                case 3 -> login = true;
-
-                case 4 -> login = false;
+        try {
+            files.Login();
+            for (int i = 0; i < 12; i++) {
+                files.createNew("Diogo " + i);
             }
-        } while (choice != 0);
+        } catch (FileManagerException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        try {
+            String file = files.checkForFile("Piu");
+            System.out.println(file);
+        } catch (FileManagerException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        try {
+            String file = files.checkForFile("Diogo 1");
+            System.out.println(file);
+        } catch (FileManagerException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 }
