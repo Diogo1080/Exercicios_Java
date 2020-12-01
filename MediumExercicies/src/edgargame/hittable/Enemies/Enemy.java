@@ -1,13 +1,13 @@
-package edgargame.Enemies;
+package edgargame.hittable.Enemies;
 
-/* Classe abstract implementa um metodo abstrato */
-public class Enemy {
+import edgargame.hittable.Hittable;
+
+public abstract class Enemy implements Hittable {
     protected String type;
     protected double life = 100.00;
     protected int defenseFactor;
     protected int attackFactor;
 
-    /* CONSTRUTOR */
     public Enemy(String type, int defenseFactor, int attackFactor) {
         this.type = type;
         this.defenseFactor = defenseFactor;
@@ -19,25 +19,27 @@ public class Enemy {
         System.out.println("Type: " + type + "\n Life:" + life);
     }
 
-    public boolean isAlive() {
-        if (life <= 0) {
-            return false;
-        }
-        return true;
+    @Override
+    public int attack() {
+        return (int) Math.floor(Math.random() *attackFactor);
     }
 
-    public double health() {
+    @Override
+    public double getHealth() {
         return life;
     }
 
+    @Override
+    public boolean isAlive() {
+        return !(life <= 0);
+    }
+
+    @Override
     public void takeDamage(double damage) {
         damage -= Math.random() * defenseFactor;
         life -= damage;
     }
 
-    public int attack() {
-        return (int) Math.floor(Math.random() *attackFactor);
-    }
 
 }
 

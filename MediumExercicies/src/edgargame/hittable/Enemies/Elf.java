@@ -1,6 +1,5 @@
- package edgargame.Enemies;
+ package edgargame.hittable.Enemies;
 
- /* ANTÓNIOS */
 public class Elf extends Enemy {
 
     public Elf(int defenseFactor, int attackFactor){

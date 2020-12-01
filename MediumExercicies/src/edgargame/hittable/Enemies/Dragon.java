@@ -1,4 +1,4 @@
-package edgargame.Enemies;
+package edgargame.hittable.Enemies;
 
 public class Dragon extends Enemy {
 
