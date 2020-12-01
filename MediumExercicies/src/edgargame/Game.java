@@ -1,7 +1,7 @@
 package edgargame;
 
-import edgargame.hittable.Enemies.Enemy;
 import edgargame.hittable.Hittable;
+import edgargame.hittable.obstacles.Obstacles;
 
 import java.util.Random;
 import java.util.Scanner;
@@ -12,44 +12,51 @@ public class Game {
 
     private String[] enemyTypes = new String[]{"Elf", "Dwarf", "Human"};
     private String[] obstaclesTypes = new String[]{"Rock", "Tree"};
-    private Hittable[] hittable = new Enemy[8];
+    private Hittable[] hittable = new Hittable[8];
     private Player player = new Player();
 
     public void start() {
+        Hittable[] newhittable = new Hittable[7];
+
         for (int i = 0; i < 5; i++) {
-            hittable[i] = HittableFactory.createHittable(enemyTypes[(int) (Math.random() * 3)]);
+            newhittable[i] = HittableFactory.createHittable(enemyTypes[(int) (Math.random() * 3)]);
         }
 
-        for (int i = 5; i < hittable.length - 1; i++) {
-            Hittable newHittable = HittableFactory.createHittable(obstaclesTypes[(int) (Math.random() * 2)]);
-            hittable[i] = newHittable;
+        for (int i = 5; i < newhittable.length; i++) {
+            newhittable[i] = HittableFactory.createHittable(obstaclesTypes[(int) (Math.random() * 2)]);
         }
 
-        shuffleArray(hittable);
+        RandomizeArray(newhittable);
 
-        hittable[hittable.length - 1] = HittableFactory.createHittable(enemyTypes[(int) (Math.random() * 3)]);
+        System.arraycopy(newhittable, 0, hittable, 0, newhittable.length);
 
-        for (int i = 0; i < hittable.length - 1; i++) {
-            hittable[i].print();
-        }
+        hittable[hittable.length - 1] = HittableFactory.createHittable("dragon");
     }
 
     private void normalAttack() {
         hittable[stage].takeDamage(player.normalAttack());
+        System.out.println("You attack the " + hittable[stage].printType() + ".");
         if (hittable[stage].isAlive()) {
             player.getHitted(hittable[stage].attack());
         } else {
+            if (hittable[stage] instanceof Obstacles) {
+                ((Obstacles) hittable[stage]).getReward(player);
+            }
             stage++;
         }
     }
 
     private void specialAttack() {
         int specialAttack = player.specialAttack();
+        System.out.println("You special attack the " + hittable[stage].printType() + ".");
         if (specialAttack != 0) {
             hittable[stage].takeDamage(specialAttack);
             if (hittable[stage].isAlive()) {
                 player.getHitted(hittable[stage].attack());
             } else {
+                if (hittable[stage] instanceof Obstacles) {
+                    ((Obstacles) hittable[stage]).getReward(player);
+                }
                 stage++;
             }
         } else {
@@ -64,6 +71,17 @@ public class Game {
         }
         player.rechargeHealth(15);
     }
+
+    private void avoid() {
+        if (hittable[stage] instanceof Obstacles) {
+            player.getHitted(((Obstacles) hittable[stage]).getAvoidDamage());
+            System.out.println("You avoided the obstacle but got scratched in the process losing " + ((Obstacles) hittable[stage]).getAvoidDamage() + " life.");
+            return;
+        }
+        player.getHitted(3);
+        System.out.println("When you try to run away you get hit losing 3 life.");
+    }
+
 
     public void round() {
         stage = 0;
@@ -81,6 +99,7 @@ public class Game {
                 case 1 -> normalAttack();
                 case 2 -> specialAttack();
                 case 3 -> recharge();
+                case 4 -> avoid();
                 case 5 -> {
                     status = false;
                     System.out.println("Exiting...");
@@ -97,18 +116,16 @@ public class Game {
         } while (status);
     }
 
-    private static void shuffleArray(Hittable[] array) {
-        int index;
-        Random random = new Random();
-        for (int i = array.length - 2; i > 0; i--) {
+    public static void RandomizeArray(Hittable[] array) {
+        Random rgen = new Random();  // Random number generator
 
-            index = random.nextInt(i + 1);
-            if (index != i) {
-                array[index] = array[i];
-                array[i] = array[index];
-                array[index] = array[i];
-            }
+        for (int i = 0; i < array.length; i++) {
+            int randomPosition = rgen.nextInt(array.length);
+            Hittable temp = array[i];
+            array[i] = array[randomPosition];
+            array[randomPosition] = temp;
         }
+
     }
 }
 

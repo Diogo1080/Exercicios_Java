@@ -1,20 +1,29 @@
 package edgargame.hittable.obstacles;
 
+import edgargame.Player;
 import edgargame.hittable.Hittable;
 
 public abstract class Obstacles implements Hittable {
     protected String type;
     protected double life = 100.00;
 
+
     public Obstacles(String type) {
         this.type = type;
+    }
+
+    public abstract int getAvoidDamage();
+    public abstract void getReward(Player player);
+
+    @Override
+    public String printType() {
+        return type;
     }
 
     @Override
     public void print() {
         System.out.println("-----Obstacle-----");
         System.out.println("Type: " + type + "\n Life:" + life);
-
     }
 
     @Override

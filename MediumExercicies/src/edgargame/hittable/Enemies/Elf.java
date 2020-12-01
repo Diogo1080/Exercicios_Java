@@ -1,9 +1,9 @@
- package edgargame.hittable.Enemies;
+package edgargame.hittable.Enemies;
 
 public class Elf extends Enemy {
 
-    public Elf(int defenseFactor, int attackFactor){
-        super("Elf", defenseFactor, attackFactor);
+    public Elf(String property, int defenseFactor, int attackFactor) {
+        super("Elf", property, defenseFactor, attackFactor);
     }
 
 }

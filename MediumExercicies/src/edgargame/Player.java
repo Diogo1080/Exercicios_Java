@@ -1,6 +1,6 @@
 package edgargame;
 
-public class Player implements PlayerInterface{
+public class Player implements PlayerInterface {
     private int health = 100;
     private int normalAttack = 30;
     private int specialAttack = 50;
@@ -11,6 +11,21 @@ public class Player implements PlayerInterface{
         return health;
     }
 
+    public void getHealth(int value) {
+        health = health + value;
+    }
+
+    public void getExtraRecharge() {
+        if (healthRechargeCounter != 3) {
+            healthRechargeCounter++;
+        }
+    }
+
+    public void getExtraSpecial() {
+        if (specialAttackCounter != 3) {
+            specialAttackCounter++;
+        }
+    }
 
     public void print() {
         System.out.println(" ----Player---- ");
