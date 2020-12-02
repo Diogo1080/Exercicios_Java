@@ -3,6 +3,7 @@ package edgargame;
 import edgargame.hittable.Hittable;
 import edgargame.hittable.Hittables;
 import edgargame.hittable.obstacles.Obstacles;
+import generics.Cons;
 
 import java.util.Scanner;
 
@@ -70,11 +71,10 @@ public class Game {
     }
 
     private void recharge() {
-        int rechargeHealth = player.rechargeHealth(15);
-        if (rechargeHealth == 0) {
+        if (player.getHealthRechargeCounter() == 0) {
             System.out.println("You don't have anymore recharges.");
         }
-        player.rechargeHealth(15);
+        player.rechargeHealth(Constants.PLAYER_REGEN);
     }
 
     private void avoid() {
@@ -83,8 +83,8 @@ public class Game {
             System.out.println("You avoided the obstacle but got scratched in the process losing " + ((Obstacles) currentThreat).getAvoidDamage() + " life.");
             return;
         }
-        player.getHitted(3);
-        System.out.println("When you try to run away you get hit losing 3 life.");
+        player.getHitted(Constants.PLAYER_DAMAGE_FROM_AVOID_ENEMY);
+        System.out.println("When you try to run away you get hit losing "+ Constants.PLAYER_DAMAGE_FROM_AVOID_ENEMY +" life.");
     }
 
 
