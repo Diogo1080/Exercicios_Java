@@ -36,14 +36,7 @@ public class Game {
     private void normalAttack() {
         hittable[stage].takeDamage(player.normalAttack());
         System.out.println("You attack the " + hittable[stage].printType() + ".");
-        if (hittable[stage].isAlive()) {
-            player.getHitted(hittable[stage].attack());
-        } else {
-            if (hittable[stage] instanceof Obstacles) {
-                ((Obstacles) hittable[stage]).getReward(player);
-            }
-            stage++;
-        }
+        damagePlayer();
     }
 
     private void specialAttack() {
@@ -51,16 +44,20 @@ public class Game {
         System.out.println("You special attack the " + hittable[stage].printType() + ".");
         if (specialAttack != 0) {
             hittable[stage].takeDamage(specialAttack);
-            if (hittable[stage].isAlive()) {
-                player.getHitted(hittable[stage].attack());
-            } else {
-                if (hittable[stage] instanceof Obstacles) {
-                    ((Obstacles) hittable[stage]).getReward(player);
-                }
-                stage++;
-            }
+            damagePlayer();
         } else {
             System.out.println("You don't have anymore special attacks.");
+        }
+    }
+
+    private void damagePlayer() {
+        if (hittable[stage].isAlive()) {
+            player.getHitted(hittable[stage].attack());
+        } else {
+            if (hittable[stage] instanceof Obstacles) {
+                ((Obstacles) hittable[stage]).getReward(player);
+            }
+            stage++;
         }
     }
 
@@ -82,6 +79,17 @@ public class Game {
         System.out.println("When you try to run away you get hit losing 3 life.");
     }
 
+
+    private void checkIfWonOrLost(){
+        if (!player.isAlive()) {
+            status = false;
+            System.out.println("You died");
+        }
+        if (hittable[hittable.length - 1].getHealth() <= 0) {
+            System.out.println("You win.");
+            status = false;
+        }
+    }
 
     public void round() {
         stage = 0;
@@ -106,13 +114,7 @@ public class Game {
                 }
                 default -> System.out.println("Choice doesn't exists.");
             }
-            if (!player.isAlive()) {
-                status = false;
-                System.out.println("You died");
-            }
-            if (hittable[hittable.length - 1].getHealth() <= 0) {
-                status = false;
-            }
+            checkIfWonOrLost();
         } while (status);
     }
 

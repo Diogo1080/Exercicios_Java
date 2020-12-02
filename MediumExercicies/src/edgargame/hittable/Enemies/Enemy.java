@@ -16,6 +16,12 @@ public abstract class Enemy implements Hittable {
         this.attackFactor = attackFactor;
     }
 
+    public Enemy(String type, int defenseFactor, int attackFactor) {
+        this.type = type;
+        this.property = "";
+        this.defenseFactor = defenseFactor;
+        this.attackFactor = attackFactor;
+    }
     @Override
     public String printType() {
         return property + " " + type;

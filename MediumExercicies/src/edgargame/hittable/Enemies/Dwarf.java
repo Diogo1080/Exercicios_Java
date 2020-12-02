@@ -6,5 +6,9 @@ public class Dwarf extends Enemy {
         super("Dwarf", property, defenseFactor, attackFactor);
     }
 
+    public Dwarf( int defenseFactor, int attackFactor) {
+        super("Dwarf", defenseFactor, attackFactor);
+    }
+
 
 }

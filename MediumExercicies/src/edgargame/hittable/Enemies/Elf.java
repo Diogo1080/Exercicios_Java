@@ -6,4 +6,8 @@ public class Elf extends Enemy {
         super("Elf", property, defenseFactor, attackFactor);
     }
 
+    public Elf(int defenseFactor, int attackFactor) {
+        super("Elf", defenseFactor, attackFactor);
+    }
+
 }
