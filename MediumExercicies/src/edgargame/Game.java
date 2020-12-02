@@ -1,49 +1,57 @@
 package edgargame;
 
 import edgargame.hittable.Hittable;
+import edgargame.hittable.Hittables;
 import edgargame.hittable.obstacles.Obstacles;
 
-import java.util.Random;
 import java.util.Scanner;
 
 public class Game {
     private boolean status = true;
     private int stage;
-
-    private String[] enemyTypes = new String[]{"Elf", "Dwarf", "Human"};
-    private String[] obstaclesTypes = new String[]{"Rock", "Tree"};
-    private Hittable[] hittable = new Hittable[8];
+    private Hittable currentThreat = null;
+    private Hittables[] hittable = new Hittables[8];
     private Player player = new Player();
 
     public void start() {
-        Hittable[] newhittable = new Hittable[7];
+        Hittables[] newhittables = new Hittables[7];
 
         for (int i = 0; i < 5; i++) {
-            newhittable[i] = HittableFactory.createHittable(enemyTypes[(int) (Math.random() * 3)]);
+            newhittables[i] = Hittables.getRandomEnemy();
         }
 
-        for (int i = 5; i < newhittable.length; i++) {
-            newhittable[i] = HittableFactory.createHittable(obstaclesTypes[(int) (Math.random() * 2)]);
+        for (int i = 5; i < newhittables.length; i++) {
+            newhittables[i] = Hittables.getRandomObstacle();
         }
 
-        RandomizeArray(newhittable);
+        Hittables.RandomizeArray(newhittables);
 
-        System.arraycopy(newhittable, 0, hittable, 0, newhittable.length);
+        System.arraycopy(newhittables, 0, hittable, 0, newhittables.length);
 
-        hittable[hittable.length - 1] = HittableFactory.createHittable("dragon");
+        hittable[hittable.length - 1] = Hittables.DRAGON;
+
+        round();
+    }
+
+    private void getNewThreat() {
+        if (hittable[stage]==Hittables.DRAGON){
+            return;
+        }
+        stage++;
+        currentThreat = HittableFactory.createHittable(hittable[stage]);
     }
 
     private void normalAttack() {
-        hittable[stage].takeDamage(player.normalAttack());
-        System.out.println("You attack the " + hittable[stage].printType() + ".");
+        currentThreat.takeDamage(player.normalAttack());
+        System.out.println("You attack the " + currentThreat.printType() + ".");
         damagePlayer();
     }
 
     private void specialAttack() {
         int specialAttack = player.specialAttack();
-        System.out.println("You special attack the " + hittable[stage].printType() + ".");
         if (specialAttack != 0) {
-            hittable[stage].takeDamage(specialAttack);
+            System.out.println("You special attack the " + currentThreat.printType() + ".");
+            currentThreat.takeDamage(specialAttack);
             damagePlayer();
         } else {
             System.out.println("You don't have anymore special attacks.");
@@ -51,13 +59,13 @@ public class Game {
     }
 
     private void damagePlayer() {
-        if (hittable[stage].isAlive()) {
-            player.getHitted(hittable[stage].attack());
+        if (currentThreat.isAlive()) {
+            player.getHitted(currentThreat.attack());
         } else {
-            if (hittable[stage] instanceof Obstacles) {
-                ((Obstacles) hittable[stage]).getReward(player);
+            if (currentThreat instanceof Obstacles) {
+                ((Obstacles) currentThreat).getReward(player);
             }
-            stage++;
+            getNewThreat();
         }
     }
 
@@ -70,9 +78,9 @@ public class Game {
     }
 
     private void avoid() {
-        if (hittable[stage] instanceof Obstacles) {
-            player.getHitted(((Obstacles) hittable[stage]).getAvoidDamage());
-            System.out.println("You avoided the obstacle but got scratched in the process losing " + ((Obstacles) hittable[stage]).getAvoidDamage() + " life.");
+        if (currentThreat instanceof Obstacles) {
+            player.getHitted(((Obstacles) currentThreat).getAvoidDamage());
+            System.out.println("You avoided the obstacle but got scratched in the process losing " + ((Obstacles) currentThreat).getAvoidDamage() + " life.");
             return;
         }
         player.getHitted(3);
@@ -80,22 +88,23 @@ public class Game {
     }
 
 
-    private void checkIfWonOrLost(){
+    private void checkIfWonOrLost() {
         if (!player.isAlive()) {
             status = false;
             System.out.println("You died");
         }
-        if (hittable[hittable.length - 1].getHealth() <= 0) {
-            System.out.println("You win.");
+        if (currentThreat.getHealth() <= 0) {
             status = false;
+            System.out.println("You win.");
         }
     }
 
     public void round() {
         stage = 0;
+        getNewThreat();
         do {
             player.print();
-            hittable[stage].print();
+            currentThreat.print();
             Scanner scan = new Scanner(System.in);
             System.out.println(" 1: Attack enemy");
             System.out.println(" 2: Special Attack");
@@ -118,16 +127,6 @@ public class Game {
         } while (status);
     }
 
-    public static void RandomizeArray(Hittable[] array) {
-        Random rgen = new Random();  // Random number generator
 
-        for (int i = 0; i < array.length; i++) {
-            int randomPosition = rgen.nextInt(array.length);
-            Hittable temp = array[i];
-            array[i] = array[randomPosition];
-            array[randomPosition] = temp;
-        }
-
-    }
 }
 

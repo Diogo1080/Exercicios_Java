@@ -20,7 +20,7 @@ public class Cards {
         //shuffle deck
         for (int i = 0; i < deck.length; i++) {
             int index = (int) (Math.random() * (i + 1));
-            int temp = deck[i];
+            int  temp = deck[i];
             deck[i] = deck[index];
             deck[index] = temp;
         }
