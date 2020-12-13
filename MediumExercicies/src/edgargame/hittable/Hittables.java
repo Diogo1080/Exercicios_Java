@@ -1,15 +1,17 @@
 package edgargame.hittable;
 
+import edgargame.GameProperties;
+
 import java.util.ArrayList;
 import java.util.Random;
 
 public enum Hittables {
-    DRAGON("boss"),
-    DWARF("enemy"),
-    ELF("enemy"),
-    HUMAN("enemy"),
-    ROCK("obstacle"),
-    TREE("obstacle");
+    DRAGON(GameProperties.BOSS_HITTABLE),
+    DWARF(GameProperties.ENEMY_HITTABLE),
+    ELF(GameProperties.ENEMY_HITTABLE),
+    HUMAN(GameProperties.ENEMY_HITTABLE),
+    ROCK(GameProperties.OBSTACLE_HITTABLE),
+    TREE(GameProperties.OBSTACLE_HITTABLE);
 
     private final String type;
     public final static Hittables[] enemies = getEnemies();
@@ -30,7 +32,7 @@ public enum Hittables {
     public static Hittables[] getEnemies() {
         ArrayList<Hittables> enemies = new ArrayList<>();
         for (Hittables e : Hittables.values()) {
-            if (e.type.equals("enemy")) {
+            if (e.type.equals(GameProperties.ENEMY_HITTABLE)) {
                 enemies.add(Hittables.valueOf(e.name()));
             }
         }
@@ -40,7 +42,7 @@ public enum Hittables {
     public static Hittables[] getObstacles() {
         ArrayList<Hittables> enemies = new ArrayList<>();
         for (Hittables e : Hittables.values()) {
-            if (e.type.equals("obstacle")) {
+            if (e.type.equals(GameProperties.OBSTACLE_HITTABLE)) {
                 enemies.add(Hittables.valueOf(e.name()));
             }
         }

@@ -1,6 +1,10 @@
 package edgargame;
 
-public class Constants {
+public class GameProperties {
+    public static final String ENEMY_HITTABLE= "enemy";
+    public static final String OBSTACLE_HITTABLE = "obstacle";
+    public static final String BOSS_HITTABLE = "boss";
+
     public static final int DRAGON_ATTACK_FACTOR = 20;
     public static final int DRAGON_DEFENCE_FACTOR = 20;
 

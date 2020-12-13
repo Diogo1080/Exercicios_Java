@@ -14,7 +14,7 @@ public class HittableFactory {
     public static Hittable createHittable(Hittables Hittable) {
         switch (Hittable) {
             case HUMAN:
-                return new Human(Constants.HUMAN_DEFENCE_FACTOR, Constants.HUMAN_ATTACK_FACTOR);
+                return new Human(GameProperties.HUMAN_DEFENCE_FACTOR, GameProperties.HUMAN_ATTACK_FACTOR);
             case ROCK:
                 return new Rock();
             case TREE:
@@ -22,23 +22,23 @@ public class HittableFactory {
             case ELF: {
                 if (((int) (Math.random() * 2)) == 1) {
                     return new Elf("Magic",
-                            Constants.ELF_DEFENCE_FACTOR + Constants.MAGIC_PROPERTY_BONUS,
-                            Constants.ELF_ATTACK_FACTOR + Constants.MAGIC_PROPERTY_BONUS
+                            GameProperties.ELF_DEFENCE_FACTOR + GameProperties.MAGIC_PROPERTY_BONUS,
+                            GameProperties.ELF_ATTACK_FACTOR + GameProperties.MAGIC_PROPERTY_BONUS
                     );
                 }
-                return new Elf(Constants.ELF_DEFENCE_FACTOR, Constants.ELF_ATTACK_FACTOR);
+                return new Elf(GameProperties.ELF_DEFENCE_FACTOR, GameProperties.ELF_ATTACK_FACTOR);
             }
             case DWARF: {
                 if (((int) (Math.random() * 2)) == 1) {
                     return new Dwarf("Drunk",
-                            Constants.DWARF_DEFENCE_FACTOR + Constants.DRUNK_PROPERTY_BONUS,
-                            Constants.DWARF_ATTACK_FACTOR + Constants.DRUNK_PROPERTY_BONUS
+                            GameProperties.DWARF_DEFENCE_FACTOR + GameProperties.DRUNK_PROPERTY_BONUS,
+                            GameProperties.DWARF_ATTACK_FACTOR + GameProperties.DRUNK_PROPERTY_BONUS
                     );
                 }
-                return new Dwarf(Constants.DWARF_DEFENCE_FACTOR, Constants.DWARF_ATTACK_FACTOR);
+                return new Dwarf(GameProperties.DWARF_DEFENCE_FACTOR, GameProperties.DWARF_ATTACK_FACTOR);
             }
             case DRAGON:
-                return new Dragon(Constants.DRAGON_DEFENCE_FACTOR, Constants.DRAGON_ATTACK_FACTOR);
+                return new Dragon(GameProperties.DRAGON_DEFENCE_FACTOR, GameProperties.DRAGON_ATTACK_FACTOR);
             default:
                 return null;
         }

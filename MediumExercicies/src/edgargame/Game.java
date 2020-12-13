@@ -3,13 +3,13 @@ package edgargame;
 import edgargame.hittable.Hittable;
 import edgargame.hittable.Hittables;
 import edgargame.hittable.obstacles.Obstacles;
-import generics.Cons;
 
 import java.util.Scanner;
 
 public class Game {
-    private boolean status = true;
+
     private int stage;
+    private boolean status = true;
     private Hittable currentThreat = null;
     private Hittables[] hittable = new Hittables[8];
     private Player player = new Player();
@@ -74,7 +74,7 @@ public class Game {
         if (player.getHealthRechargeCounter() == 0) {
             System.out.println("You don't have anymore recharges.");
         }
-        player.rechargeHealth(Constants.PLAYER_REGEN);
+        player.rechargeHealth(GameProperties.PLAYER_REGEN);
     }
 
     private void avoid() {
@@ -83,8 +83,8 @@ public class Game {
             System.out.println("You avoided the obstacle but got scratched in the process losing " + ((Obstacles) currentThreat).getAvoidDamage() + " life.");
             return;
         }
-        player.getHitted(Constants.PLAYER_DAMAGE_FROM_AVOID_ENEMY);
-        System.out.println("When you try to run away you get hit losing "+ Constants.PLAYER_DAMAGE_FROM_AVOID_ENEMY +" life.");
+        player.getHitted(GameProperties.PLAYER_DAMAGE_FROM_AVOID_ENEMY);
+        System.out.println("When you try to run away you get hit losing "+ GameProperties.PLAYER_DAMAGE_FROM_AVOID_ENEMY +" life.");
     }
 
 

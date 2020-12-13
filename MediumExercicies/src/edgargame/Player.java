@@ -2,10 +2,10 @@ package edgargame;
 
 public class Player implements PlayerInterface {
     private int health = 100;
-    private int normalAttack = Constants.PLAYER_ATTACK_FACTOR;
-    private int specialAttack = Constants.PLAYER_SPECIAL_ATTACK_FACTOR;
-    private int specialAttackCounter = Constants.PLAYER_SPECIAL_ATTACK_COUNTER;
-    private int healthRechargeCounter = Constants.PLAYER_REGEN_COUNTER;
+    private int normalAttack = GameProperties.PLAYER_ATTACK_FACTOR;
+    private int specialAttack = GameProperties.PLAYER_SPECIAL_ATTACK_FACTOR;
+    private int specialAttackCounter = GameProperties.PLAYER_SPECIAL_ATTACK_COUNTER;
+    private int healthRechargeCounter = GameProperties.PLAYER_REGEN_COUNTER;
 
     public int getHealthRechargeCounter() {
         return healthRechargeCounter;
@@ -20,13 +20,13 @@ public class Player implements PlayerInterface {
     }
 
     public void getExtraRecharge() {
-        if (healthRechargeCounter != Constants.PLAYER_REGEN_COUNTER) {
+        if (healthRechargeCounter != GameProperties.PLAYER_REGEN_COUNTER) {
             healthRechargeCounter++;
         }
     }
 
     public void getExtraSpecial() {
-        if (specialAttackCounter != Constants.PLAYER_SPECIAL_ATTACK_COUNTER) {
+        if (specialAttackCounter != GameProperties.PLAYER_SPECIAL_ATTACK_COUNTER) {
             specialAttackCounter++;
         }
     }
@@ -52,13 +52,12 @@ public class Player implements PlayerInterface {
     public int rechargeHealth(int health) {
         if (healthRechargeCounter != 0) {
             this.health += health;
-            if (this.health >= 100) {
+            if ( this.health > 100) {
                 this.health = 100;
             }
             healthRechargeCounter--;
-            return this.health;
         }
-        return 0;
+        return this.health;
     }
 
     @Override

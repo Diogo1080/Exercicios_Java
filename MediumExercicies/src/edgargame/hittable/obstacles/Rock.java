@@ -1,12 +1,12 @@
 package edgargame.hittable.obstacles;
 
-import edgargame.Constants;
+import edgargame.GameProperties;
 import edgargame.Player;
 
 public class Rock extends Obstacles {
 
     public int getAvoidDamage() {
-        return Constants.ROCK_AVOID_DAMAGE;
+        return GameProperties.ROCK_AVOID_DAMAGE;
     }
 
 
@@ -21,11 +21,11 @@ public class Rock extends Obstacles {
         switch (random) {
             case 0 -> {
                 System.out.println("You get hit for 3 life.");
-                player.getHitted(Constants.ROCK_HIT_DAMAGE);
+                player.getHitted(GameProperties.ROCK_HIT_DAMAGE);
             }
             case 1 -> {
                 System.out.println("You get lucky and get 3 life.");
-                player.getHealth(Constants.ROCK_REGEN_LIFE);
+                player.getHealth(GameProperties.ROCK_REGEN_LIFE);
             }
             case 2 -> {
                 System.out.println("You get lucky and get an extra recharge for your life.");
