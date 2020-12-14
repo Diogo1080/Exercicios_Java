@@ -1,4 +1,4 @@
-package servidorpassapalavra;
+package ServerBrokenCellphone;
 
 import java.io.*;
 import java.net.ServerSocket;
